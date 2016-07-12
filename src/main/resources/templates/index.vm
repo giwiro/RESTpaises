@@ -1,0 +1,6 @@
+#parse("/templates/layout.vm")
+#@mainLayout()
+
+<h1>Index</h1>
+
+#end

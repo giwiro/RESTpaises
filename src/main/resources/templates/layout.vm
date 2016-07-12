@@ -1,0 +1,12 @@
+#macro(mainLayout)
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>$titulo</title>
+</head>
+<body>
+$bodyContent
+</body>
+</html>
+#end
