@@ -4,8 +4,8 @@
 <h1>Carga masiva</h1>
 
 <form action="/cargaMasiva/upload" method="post" enctype="multipart/form-data" >
-    <input type="file" name="file" />
-    <button type="submit" >Upload picture</button>
+    <input type="file" name="file" /><br />
+    <button type="submit" >Subir .sql</button>
 </form>
 
 #end

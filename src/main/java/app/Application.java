@@ -4,8 +4,8 @@ import app.Routes;
 import static spark.Spark.*;
 import static spark.debug.DebugScreen.*;
 
-import app.controllers.CargaMasivaController;
-import app.controllers.IndexController;
+import app.controllers.*;
+import app.models.Departamento;
 import spark.Route;
 
 import java.io.File;
@@ -63,6 +63,27 @@ public class Application {
         get(Routes.Web.INDEX,                   IndexController.serveIndexPage);
         get(Routes.Web.CARGA_MASIVA_PAGE,       CargaMasivaController.serveCargaMasivaPage);
         post(Routes.Web.CARGA_MASIVA_UPLOAD,    CargaMasivaController.handleUploadFile);
+
+
+        //CRUD
+        post(Routes.Web.READ_PAISES,            PaisController.handleReadPaises);
+
+
+        post(Routes.Web.CREATE_DEPARTAMENTO,    DepartamentoController.handleCreateDepartamento);
+        post(Routes.Web.READ_DEPARTAMENTOS,     DepartamentoController.handleReadDepartamentos);
+        post(Routes.Web.UPDATE_DEPARTAMENTO,    DepartamentoController.handleUpdateDepartamento);
+        post(Routes.Web.DELETE_DEPARTAMENTO,    DepartamentoController.handleDeleteDepartamento);
+
+        post(Routes.Web.CREATE_PROVINCIA,       ProvinciaController.handleCreateProvincia);
+        post(Routes.Web.READ_PROVINCIAS,        ProvinciaController.handleReadProvincias);
+        post(Routes.Web.UPDATE_PROVINCIA,       ProvinciaController.handleUpdateProvincia);
+        post(Routes.Web.DELETE_PROVINCIA,       ProvinciaController.handleDeleteProvincia);
+
+        post(Routes.Web.CREATE_DISTRITO,        DistritoController.handleCreateDistrito);
+        post(Routes.Web.READ_DISTRITOS,         DistritoController.handleReadDistritos);
+        post(Routes.Web.UPDATE_DISTRITO,        DistritoController.handleUpdateDistrito);
+        post(Routes.Web.DELETE_DISTRITO,       DistritoController.handleDeleteDistrito);
+
 
     }
 
