@@ -1,0 +1,11 @@
+#parse("/templates/layout.vm")
+#@mainLayout()
+
+<h1>Carga masiva</h1>
+
+<form action="/cargaMasiva/upload" method="post" enctype="multipart/form-data" >
+    <input type="file" name="file" />
+    <button type="submit" >Upload picture</button>
+</form>
+
+#end
