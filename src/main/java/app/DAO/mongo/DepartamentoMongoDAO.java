@@ -7,9 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
-/**
- * Created by Gi Wah Davalos on 15/07/2016.
- */
+
 public class DepartamentoMongoDAO {
 
     private final String COLLECTION_NAME = "pais";

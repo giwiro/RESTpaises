@@ -13,9 +13,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Gi Wah Davalos on 15/07/2016.
- */
+
 public class ProvinciaMongoDAO {
 
     private final String COLLECTION_NAME = "pais";

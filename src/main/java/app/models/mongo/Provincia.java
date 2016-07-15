@@ -1,8 +1,6 @@
 package app.models.mongo;
 
-/**
- * Created by Gi Wah Davalos on 15/07/2016.
- */
+
 public class Provincia {
 
     private String _id;
