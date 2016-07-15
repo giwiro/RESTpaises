@@ -1,8 +1,6 @@
-package app.models;
+package app.models.mysql;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class Provincia {
     private int id;
     private String nombre;
@@ -39,5 +37,13 @@ public class Provincia {
 
     public void setId_departamento(int id_departamento) {
         this.id_departamento = id_departamento;
+    }
+
+    public app.models.mongo.Provincia toProvinciaMongo() {
+        app.models.mongo.Provincia tmp = new app.models.mongo.Provincia();
+        tmp.setNombre(this.getNombre());
+        tmp.set_id(this.getId()+"");
+        tmp.setId_departamento(this.getId_departamento());
+        return tmp;
     }
 }

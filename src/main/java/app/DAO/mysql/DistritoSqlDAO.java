@@ -1,16 +1,13 @@
 package app.DAO.mysql;
 
-import app.models.Distrito;
-import app.models.Pais;
+import app.models.mysql.Distrito;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
-public class DistritoDAO {
+
+public class DistritoSqlDAO {
 
     private Connection con;
 
@@ -19,8 +16,47 @@ public class DistritoDAO {
     private final String readAllDistritosSQL = "SELECT * from distritos";
     private final String deleteDistritoSQL = "DELETE from distritos WHERE id = ?";
 
-    public DistritoDAO(Connection con) {
+    private final String readAllDistritosSQL_byProvincia = "SELECT * from distritos WHERE id_provincia = ?";
+
+    public DistritoSqlDAO(Connection con) {
         this.con = con;
+    }
+
+    public List<Distrito> getDistritosByProvincia(int id_provincia) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Distrito> rpta = new ArrayList<>();
+        try {
+            pstmt = con.prepareStatement(readAllDistritosSQL_byProvincia);
+            pstmt.setInt(1, id_provincia);
+            rs = pstmt.executeQuery();
+            Distrito tmpDistrito = null;
+
+            while (rs.next()){
+                tmpDistrito = new Distrito();
+                tmpDistrito.setId(rs.getInt("id"));
+                tmpDistrito.setNombre(rs.getString("nombre"));
+                tmpDistrito.setPoblacion(rs.getInt("poblacion"));
+                tmpDistrito.setId_provincia(rs.getInt("id_provincia"));
+
+                rpta.add(tmpDistrito);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        } finally{
+            //finally block used to close resources
+            try{
+                if(pstmt!=null)
+                    pstmt.close();
+            }catch(SQLException se2){
+            }
+        }
+
+        return rpta;
     }
 
     public boolean createDistrito(String nombre, int poblacion, int id_provincia) throws SQLException{

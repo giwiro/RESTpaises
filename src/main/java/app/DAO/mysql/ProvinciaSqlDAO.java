@@ -1,15 +1,13 @@
 package app.DAO.mysql;
 
-import app.models.Provincia;
+import app.models.mysql.Provincia;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
-public class ProvinciaDAO {
+
+public class ProvinciaSqlDAO {
 
     private Connection con;
     private final String createProvinciaSQL = "INSERT INTO provincias (nombre, id_departamento) VALUES (?, ?);";
@@ -17,8 +15,82 @@ public class ProvinciaDAO {
     private final String readAllProvinciasSQL = "SELECT * from provincias";
     private final String deleteProvinciaSQL = "DELETE from provincias WHERE id = ?";
 
-    public ProvinciaDAO(Connection mysqlConnection) {
+    private final String readProvinciaSQL_byId = "SELECT * from provincias WHERE id = ?";
+    private final String readProvinciasSQL_byPais = "SELECT * from provincias WHERE id_pais = ?";
+
+    public ProvinciaSqlDAO(Connection mysqlConnection) {
         this.con = mysqlConnection;
+    }
+
+    public Provincia getProvincia(int id) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Provincia provincia = null;
+
+        try {
+            pstmt = con.prepareStatement(readProvinciaSQL_byId);
+            pstmt.setInt(1, id);
+            provincia = new Provincia();
+            rs = pstmt.executeQuery();
+
+            // No se usa while por que es solamente un registro
+            rs.next();
+            provincia.setId(rs.getInt("id"));
+            provincia.setNombre(rs.getString("nombre"));
+            provincia.setId_departamento(rs.getInt("id_departamento"));
+
+            System.out.println("Found provincia: '" + provincia.getNombre() + "'" );
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return provincia;
+    }
+
+    public List<Provincia> getProvinciasByPais(int id) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Provincia> rpta = new ArrayList<>();
+
+        try {
+            pstmt = con.prepareStatement(readProvinciaSQL_byId);
+            pstmt.setInt(1, id);
+            Provincia tmpProvincia = null;
+            rs = pstmt.executeQuery();
+
+            while (rs.next()){
+                tmpProvincia = new Provincia();
+                tmpProvincia.setId(rs.getInt("id"));
+                tmpProvincia.setNombre(rs.getString("nombre"));
+                tmpProvincia.setId_departamento(rs.getInt("id_departamento"));
+
+                rpta.add(tmpProvincia);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return rpta;
     }
 
     public boolean createProvincia(String nombre, int id_departamento) throws SQLException{

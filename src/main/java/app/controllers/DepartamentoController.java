@@ -1,26 +1,32 @@
 package app.controllers;
 
 import app.Application;
-import app.DAO.mysql.DepartamentoDAO;
-import app.models.Departamento;
+import app.DAO.mysql.DepartamentoSqlDAO;
+import app.models.mysql.Departamento;
 import com.google.gson.Gson;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import spark.Request;
+import spark.Response;
 import spark.Route;
 
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class DepartamentoController {
 
-    static DepartamentoDAO departamentoDAO = new DepartamentoDAO(Application.mysqlConnection);
+    static DepartamentoSqlDAO departamentoSqlDAO = new DepartamentoSqlDAO(Application.mysqlConnection);
 
     public static Route handleReadDepartamentos = (request, response) -> {
-        List<Departamento> departamentoList = departamentoDAO.getAllDepartamentos();
+        List<Departamento> departamentoList = departamentoSqlDAO.getAllDepartamentos();
         String json = new Gson().toJson(departamentoList);
         return json;
+    };
+
+    public static Route asdasds = new Route() {
+        @Override
+        public Object handle(Request request, Response response) throws Exception {
+            return null;
+        }
     };
 
     public static Route handleCreateDepartamento = (request, response) -> {
@@ -29,7 +35,7 @@ public class DepartamentoController {
         int id_pais;
         try{
             id_pais = Integer.parseInt(request.queryParams("id_pais"));
-            rpta = departamentoDAO.createDepartamento(nombre, id_pais);
+            rpta = departamentoSqlDAO.createDepartamento(nombre, id_pais);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }
@@ -46,7 +52,7 @@ public class DepartamentoController {
         try{
             id_pais = Integer.parseInt(request.queryParams("id_pais"));
             id = Integer.parseInt(request.queryParams("id"));
-            rpta = departamentoDAO.updateDepartamento(id, nombre, id_pais);
+            rpta = departamentoSqlDAO.updateDepartamento(id, nombre, id_pais);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }
@@ -59,7 +65,7 @@ public class DepartamentoController {
 
         try{
             id = Integer.parseInt(request.queryParams("id"));
-            rpta = departamentoDAO.deleteDepartamento(id);
+            rpta = departamentoSqlDAO.deleteDepartamento(id);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }

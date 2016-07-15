@@ -1,23 +1,21 @@
 package app.controllers;
 
 import app.Application;
-import app.DAO.mysql.ProvinciaDAO;
-import app.models.Provincia;
+import app.DAO.mysql.ProvinciaSqlDAO;
+import app.models.mysql.Provincia;
 import com.google.gson.Gson;
 import spark.Route;
 
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class ProvinciaController {
 
-    static ProvinciaDAO provinciaDAO = new ProvinciaDAO(Application.mysqlConnection);
+    static ProvinciaSqlDAO provinciaSqlDAO = new ProvinciaSqlDAO(Application.mysqlConnection);
 
     public static Route handleReadProvincias = (request, response) -> {
-        List<Provincia> provinciaList = provinciaDAO.getAllProvincias();
+        List<Provincia> provinciaList = provinciaSqlDAO.getAllProvincias();
         String json = new Gson().toJson(provinciaList);
         return json;
     };
@@ -28,7 +26,7 @@ public class ProvinciaController {
         int id_departamento;
         try{
             id_departamento = Integer.parseInt(request.queryParams("id_departamento"));
-            rpta = provinciaDAO.createProvincia(nombre, id_departamento);
+            rpta = provinciaSqlDAO.createProvincia(nombre, id_departamento);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }
@@ -45,7 +43,7 @@ public class ProvinciaController {
         try{
             id_departamento = Integer.parseInt(request.queryParams("id_departamento"));
             id = Integer.parseInt(request.queryParams("id"));
-            rpta = provinciaDAO.updateProvincia(id, nombre, id_departamento);
+            rpta = provinciaSqlDAO.updateProvincia(id, nombre, id_departamento);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }
@@ -58,7 +56,7 @@ public class ProvinciaController {
 
         try{
             id = Integer.parseInt(request.queryParams("id"));
-            rpta = provinciaDAO.deleteProvincia(id);
+            rpta = provinciaSqlDAO.deleteProvincia(id);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }

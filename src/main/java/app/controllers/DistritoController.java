@@ -1,23 +1,21 @@
 package app.controllers;
 
 import app.Application;
-import app.DAO.mysql.DistritoDAO;
-import app.models.Distrito;
+import app.DAO.mysql.DistritoSqlDAO;
+import app.models.mysql.Distrito;
 import com.google.gson.Gson;
 import spark.Route;
 
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class DistritoController {
 
-    static DistritoDAO distritoDAO = new DistritoDAO(Application.mysqlConnection);
+    static DistritoSqlDAO distritoSqlDAO = new DistritoSqlDAO(Application.mysqlConnection);
 
     public static Route handleReadDistritos = (request, response) -> {
-        List<Distrito> departamentoList = distritoDAO.getAllDistritos();
+        List<Distrito> departamentoList = distritoSqlDAO.getAllDistritos();
         String json = new Gson().toJson(departamentoList);
         return json;
     };
@@ -30,7 +28,7 @@ public class DistritoController {
         try{
             poblacion = Integer.parseInt(request.queryParams("poblacion"));
             id_provincia = Integer.parseInt(request.queryParams("id_provincia"));
-            rpta = distritoDAO.createDistrito(nombre, poblacion, id_provincia);
+            rpta = distritoSqlDAO.createDistrito(nombre, poblacion, id_provincia);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }
@@ -49,7 +47,7 @@ public class DistritoController {
             poblacion = Integer.parseInt(request.queryParams("poblacion"));
             id_provincia = Integer.parseInt(request.queryParams("id_provincia"));
             id = Integer.parseInt(request.queryParams("id"));
-            rpta = distritoDAO.updateDistrito(id, nombre, poblacion, id_provincia);
+            rpta = distritoSqlDAO.updateDistrito(id, nombre, poblacion, id_provincia);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }
@@ -62,7 +60,7 @@ public class DistritoController {
 
         try{
             id = Integer.parseInt(request.queryParams("id"));
-            rpta = distritoDAO.deleteDistrito(id);
+            rpta = distritoSqlDAO.deleteDistrito(id);
         }catch(NumberFormatException | SQLException e){
             rpta = false;
         }

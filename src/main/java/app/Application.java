@@ -1,11 +1,11 @@
 package app;
 
-import app.Routes;
 import static spark.Spark.*;
 import static spark.debug.DebugScreen.*;
 
 import app.controllers.*;
-import app.models.Departamento;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import spark.Route;
 
 import java.io.File;
@@ -13,9 +13,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Created by Vicky on 12/07/2016.
- */
+
 public class Application {
 
     private final static int PORT = 8080;
@@ -24,11 +22,11 @@ public class Application {
     // Podria ser un singleton para darle robustez  (?)
 
     public static Connection mysqlConnection;
+    public static MongoDatabase mongoDB;
 
     public static File tmpDir;
 
-    public static void main(String[] args) {
-
+    private static void config() {
         // Probando existencia de librerias
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -38,13 +36,15 @@ public class Application {
             stop();
             return;
         }
+        System.out.println("Drivers de MySQL y Mongo cargado");
 
-        System.out.println("Driver de MySQL cargado");
         try {
             String user = "giwiro";
             String pass = "prograinter123";
             mysqlConnection = DriverManager
                     .getConnection("jdbc:mysql://localhost/db_test?user=" + user + "&password=" + pass);
+            MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
+            mongoDB = mongoClient.getDatabase("test_db");
         } catch (SQLException e) {
             e.printStackTrace();
             stop();
@@ -60,9 +60,18 @@ public class Application {
         port(PORT);
         enableDebugScreen();
 
+    }
+
+    public static void main(String[] args) {
+
+        config();
+
         get(Routes.Web.INDEX,                   IndexController.serveIndexPage);
         get(Routes.Web.CARGA_MASIVA_PAGE,       CargaMasivaController.serveCargaMasivaPage);
         post(Routes.Web.CARGA_MASIVA_UPLOAD,    CargaMasivaController.handleUploadFile);
+
+        // Crear documentos
+        post(Routes.Web.CREAR_DOCUMENTOS,       GenerarDocumentosController.handleGenerateDoc);
 
 
         //CRUD
@@ -82,7 +91,7 @@ public class Application {
         post(Routes.Web.CREATE_DISTRITO,        DistritoController.handleCreateDistrito);
         post(Routes.Web.READ_DISTRITOS,         DistritoController.handleReadDistritos);
         post(Routes.Web.UPDATE_DISTRITO,        DistritoController.handleUpdateDistrito);
-        post(Routes.Web.DELETE_DISTRITO,       DistritoController.handleDeleteDistrito);
+        post(Routes.Web.DELETE_DISTRITO,        DistritoController.handleDeleteDistrito);
 
 
     }

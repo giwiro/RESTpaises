@@ -1,8 +1,6 @@
-package app.models;
+package app.models.mysql;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class Pais {
     private int id;
     private String nombre;
@@ -40,5 +38,13 @@ public class Pais {
 
     public void setPbi(int pbi) {
         this.pbi = pbi;
+    }
+
+    public app.models.mongo.Pais toPaisMongo() {
+        app.models.mongo.Pais tmp = new app.models.mongo.Pais();
+        tmp.setNombre(this.getNombre());
+        tmp.setPbi(this.getPbi());
+        tmp.set_id(this.getId()+"");
+        return tmp;
     }
 }

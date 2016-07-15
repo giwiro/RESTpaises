@@ -1,30 +1,21 @@
-package app.models;
+package app.models.mongo;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class Departamento {
 
-    private int id;
+    private String _id;
     private String nombre;
     private int id_pais;
 
-    public Departamento(int id, String nombre, int id_pais) {
-        this.id = id;
-        this.nombre = nombre;
-        this.id_pais = id_pais;
-    }
-
     public Departamento() {
-
     }
 
-    public int getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getNombre() {
@@ -42,4 +33,5 @@ public class Departamento {
     public void setId_pais(int id_pais) {
         this.id_pais = id_pais;
     }
+
 }

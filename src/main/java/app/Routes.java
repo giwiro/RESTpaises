@@ -2,9 +2,6 @@ package app;
 
 import lombok.Getter;
 
-/**
- * Created by Vicky on 12/07/2016.
- */
 public class Routes {
 
     public static class Web {
@@ -15,6 +12,10 @@ public class Routes {
         public static final String CARGA_MASIVA_PAGE = "/cargaMasiva";
         @Getter
         public static final String CARGA_MASIVA_UPLOAD = "/cargaMasiva/upload";
+
+        // crear documentos
+        @Getter
+        public static final String CREAR_DOCUMENTOS = "/documentos/generate";
 
 
         // READ Pais

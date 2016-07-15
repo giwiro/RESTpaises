@@ -1,16 +1,14 @@
 package app.DAO.mysql;
 
-import app.models.Departamento;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import app.models.mysql.Departamento;
+import app.models.mysql.Provincia;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
-public class DepartamentoDAO {
+
+public class DepartamentoSqlDAO {
 
     private Connection con;
     private final String createDepartamentoSQL = "INSERT INTO departamentos (nombre, id_pais) VALUES (?, ?);";
@@ -18,8 +16,47 @@ public class DepartamentoDAO {
     private final String readAllDepartamentosSQL = "SELECT * from departamentos";
     private final String deleteDepartamentoSQL = "DELETE from departamentos WHERE id = ?";
 
-    public DepartamentoDAO(Connection mysqlConnection) {
+    private final String readDepartamentoSQL_byProvincia = "SELECT * FROM departamentos" +
+            " INNER JOIN provincias" +
+            " ON provincias.id_departamento = departamentos.id" +
+            " WHERE provincias.id = ?";
+
+    public DepartamentoSqlDAO(Connection mysqlConnection) {
         this.con = mysqlConnection;
+    }
+
+    public Departamento readDepartamentoByProvincia(int id_provincia) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Departamento rpta = null;
+
+        try {
+            pstmt = con.prepareStatement(readDepartamentoSQL_byProvincia);
+            pstmt.setInt(1, id_provincia);
+
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                rpta = new Departamento();
+                rpta.setId(rs.getInt("id"));
+                rpta.setNombre(rs.getString("nombre"));
+                rpta.setId_pais(rs.getInt("id_pais"));
+
+                System.out.println("Found departamento: '" + rpta.getNombre() + "'" );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            //finally block used to close resources
+            try{
+                if(pstmt != null)
+                    pstmt.close();
+            }catch(SQLException se2){
+            }
+        }
+
+        return rpta;
     }
 
     public boolean createDepartamento(String nombre, int id_pais) throws SQLException{

@@ -1,8 +1,6 @@
-package app.models;
+package app.models.mysql;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class Distrito {
     private int id;
     private String nombre;

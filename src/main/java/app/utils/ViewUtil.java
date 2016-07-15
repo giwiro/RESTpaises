@@ -7,9 +7,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 import java.util.Map;
 
-/**
- * Created by Vicky on 12/07/2016.
- */
 public class ViewUtil {
 
     private static VelocityTemplateEngine engine;

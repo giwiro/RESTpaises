@@ -20,9 +20,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Gi Wah Davalos on 13/07/2016.
- */
+
 public class CargaMasivaController {
 
     public static Route serveCargaMasivaPage = (request, response) -> {
